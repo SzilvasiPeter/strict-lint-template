@@ -1,4 +1,4 @@
-name: CD
+name: CD Binary
 
 on:
   push:
@@ -8,20 +8,7 @@ permissions:
   contents: write
 
 jobs:
-  publish:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
-
-      - name: Publish crate
-        env:
-          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
-        run: cargo publish --locked
-
-{% if release_binary %}
   release-binary:
-    needs: publish
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -41,4 +28,3 @@ jobs:
         with:
           files: dist/*
           generate_release_notes: true
-{% endif %}
