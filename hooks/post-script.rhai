@@ -15,7 +15,3 @@ if file::exists(cd_src) {
   }
   file::rename(cd_src, cd_dst);
 }
-
-if file::exists(".template") {
-  file::delete(".template");
-}
