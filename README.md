@@ -8,7 +8,7 @@ Strict Rust `cargo-generate` template.
 - Small release profile
 - CI: fmt, clippy, test, audit, deny, udeps, geiger, coverage + Pages
 - CD: `cd-publish` + optional `cd-binary` workflow
-- Make targets: `all`, `run`, `lint`, `test`, `cov`, `sec`
+- `just` recipes: `all`, `run`, `lint`, `test`, `cov`, `sec`
 
 ## Usage
 
@@ -24,6 +24,7 @@ rustup toolchain install nightly
 cargo install cargo-binstall
 cargo binstall -y cargo-edit cargo-llvm-cov cargo-audit cargo-deny cargo-geiger
 cargo +nightly binstall -y cargo-udeps
+cargo binstall -y just
 ```
 
 ## Required

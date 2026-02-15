@@ -20,13 +20,14 @@ jobs:
       - run: |
           rustup toolchain install nightly \
             --component llvm-tools-preview
+      - uses: taiki-e/install-action@just
       - uses: taiki-e/cache-cargo-install-action@v2
         with:
           tool: cargo-audit,cargo-deny,cargo-udeps,cargo-geiger,cargo-llvm-cov
-      - run: make lint
-      - run: make test
-      - run: make sec
-      - run: make cov
+      - run: just lint
+      - run: just test
+      - run: just sec
+      - run: just cov
       - uses: actions/upload-artifact@v4
         with:
           name: coverage-html
