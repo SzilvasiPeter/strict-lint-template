@@ -1,0 +1,15 @@
+[template]
+cargo_generate_version = ">=0.22.0"
+ignore = [".git"]
+
+[hooks]
+post = ["hooks/post-script.rhai"]
+
+[placeholders.gh_username]
+type = "string"
+prompt = "GitHub username or organization"
+
+[placeholders.release_binary]
+type = "bool"
+prompt = "Build and upload a release binary?"
+default = false

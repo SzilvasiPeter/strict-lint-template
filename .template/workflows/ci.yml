@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - run: |
+          rustup toolchain install nightly \
+            --component llvm-tools-preview
+      - uses: taiki-e/cache-cargo-install-action@v2
+        with:
+          tool: cargo-audit,cargo-deny,cargo-udeps,cargo-geiger,cargo-llvm-cov
+      - run: make lint
+      - run: make test
+      - run: make sec
+      - run: make cov
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html
+          path: target/coverage/html
+
+  pages:
+    if: github.event_name != 'pull_request'
+    needs: checks
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+      - uses: actions/download-artifact@v4
+        with:
+          name: coverage-html
+          path: target/coverage/html
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: target/coverage/html
+      - id: deploy
+        uses: actions/deploy-pages@v4

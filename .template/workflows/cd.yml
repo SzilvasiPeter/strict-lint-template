@@ -1,0 +1,44 @@
+name: CD
+
+on:
+  push:
+    tags: [v*.*.*]
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Publish crate
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+        run: cargo publish --locked
+
+{% if release_binary %}
+  release-binary:
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Build binary
+        run: cargo build --release --bin "{{project-name}}"
+
+      - name: Upload release asset
+        run: |
+          mkdir -p dist
+          cp "target/release/{{project-name}}" \
+            "dist/{{project-name}}-linux-x86_64"
+
+      - name: GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true
+{% endif %}
