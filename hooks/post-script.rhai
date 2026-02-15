@@ -16,13 +16,14 @@ if file::exists(cd_publish_src) {
   file::rename(cd_publish_src, cd_publish_dst);
 }
 
-{% if release_binary %}
-let cd_binary_src = "template/workflows/cd-binary.yml";
-let cd_binary_dst = ".github/workflows/cd-binary.yml";
-if file::exists(cd_binary_src) {
-  if file::exists(cd_binary_dst) {
-    file::delete(cd_binary_dst);
+let release_binary = "{{ release_binary }}";
+if release_binary == "true" {
+  let cd_binary_src = "template/workflows/cd-binary.yml";
+  let cd_binary_dst = ".github/workflows/cd-binary.yml";
+  if file::exists(cd_binary_src) {
+    if file::exists(cd_binary_dst) {
+      file::delete(cd_binary_dst);
+    }
+    file::rename(cd_binary_src, cd_binary_dst);
   }
-  file::rename(cd_binary_src, cd_binary_dst);
 }
-{% endif %}
