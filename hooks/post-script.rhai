@@ -16,8 +16,8 @@ if file::exists(cd_publish_src) {
   file::rename(cd_publish_src, cd_publish_dst);
 }
 
-let release_binary = "{{ release_binary }}";
-if release_binary == "true" {
+let release_binary = variable::get("release_binary");
+if release_binary {
   let cd_binary_src = "template/workflows/cd-binary.yml";
   let cd_binary_dst = ".github/workflows/cd-binary.yml";
   if file::exists(cd_binary_src) {
