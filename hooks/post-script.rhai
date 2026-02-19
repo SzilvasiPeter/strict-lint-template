@@ -27,3 +27,5 @@ if release_binary {
     file::rename(cd_binary_src, cd_binary_dst);
   }
 }
+
+file::delete(".github/workflow/.gitkeep");
