@@ -4,25 +4,21 @@ on:
   push:
     tags: [v*.*.*]
 
-permissions:
-  contents: write
-
 jobs:
   release-binary:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
-
       - name: Build binary
         run: cargo build --release --bin "{{project-name}}"
 
       - name: Upload release asset
         run: |
           mkdir -p dist
-          cp "target/release/{{project-name}}" \
-            "dist/{{project-name}}-linux-x86_64"
-
+          cp "target/release/{{project-name}}" "dist/{{project-name}}-linux-x86_64"
       - name: GitHub release
         uses: softprops/action-gh-release@v2
         with:
