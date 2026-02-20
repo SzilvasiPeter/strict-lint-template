@@ -1,5 +1,7 @@
 # {{project-name}}
 
+![coverage](https://img.shields.io/endpoint?url=https://{{gh_username}}.github.io/{{project-name}}/coverage/badge.json)
+
 Strict Rust `cargo-generate` template.
 
 ## Includes
