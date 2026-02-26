@@ -7,7 +7,7 @@ repository = "https://github.com/{{gh_username}}/{{project-name}}"
 description = "{{project-name}}"
 readme = "README.md"
 keywords = ["give me a keyword"]
-categories = ["give me a category"]
+categories = ["give me a category"] # see: https://crates.io/category_slugs
 
 [dependencies]
 
